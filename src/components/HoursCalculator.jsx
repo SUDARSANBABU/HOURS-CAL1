@@ -9,6 +9,12 @@ export default function HoursCalculator({
     const [hours, setHours] = useState("");
     const [result, setResult] = useState("");
 
+    /*
+     * AUTO CALCULATE
+     *
+     * Whenever the user types a number,
+     * calculation happens automatically.
+     */
     useEffect(() => {
         if (hours === "") {
             setResult("");
@@ -33,6 +39,7 @@ export default function HoursCalculator({
                     className="hours-input"
                     type="number"
                     min="0"
+                    step="1"
                     placeholder="Example : 48"
                     value={hours}
                     onChange={(e) => {

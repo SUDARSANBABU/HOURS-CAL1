@@ -1,45 +1,64 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+
 import HoursCalculator from "./components/HoursCalculator";
-import "./styles/calculator.css";
+
+import calculatorCSS from "./styles/calculator.css?inline";
 
 let root = null;
 let host = null;
 
 function createCalculator() {
-    if (document.getElementById("amazon-hours-calculator-host")) {
-        console.log("[CAL] Calculator already mounted");
+
+    // Prevent duplicate calculator
+    if (
+        document.getElementById(
+            "amazon-hours-calculator-host"
+        )
+    ) {
+        console.log(
+            "[CAL] Calculator already exists"
+        );
+
         return;
     }
 
-    console.log("[CAL] Creating calculator");
+    console.log(
+        "[CAL] Creating calculator"
+    );
 
+    // Host
     host = document.createElement("div");
 
-    host.id = "amazon-hours-calculator-host";
+    host.id =
+        "amazon-hours-calculator-host";
 
     host.style.position = "fixed";
     host.style.top = "80px";
     host.style.left = "50%";
-    host.style.transform = "translateX(-50%)";
     host.style.zIndex = "2147483647";
 
     document.body.appendChild(host);
 
-    // Shadow DOM prevents Amazon CSS from affecting calculator
+    // Shadow DOM
     const shadow = host.attachShadow({
         mode: "open"
     });
 
-    const style = document.createElement("style");
+    // CSS INSIDE SHADOW DOM
+    const style =
+        document.createElement("style");
 
     style.textContent = `
+        ${calculatorCSS}
+
         * {
             box-sizing: border-box;
         }
 
         :host {
             all: initial;
+            font-family: Arial, sans-serif;
         }
 
         button,
@@ -50,42 +69,44 @@ function createCalculator() {
 
     shadow.appendChild(style);
 
-    const container = document.createElement("div");
+    // React container
+    const container =
+        document.createElement("div");
 
     shadow.appendChild(container);
 
+    // React root
     root = createRoot(container);
 
     root.render(
         <React.StrictMode>
             <HoursCalculator
                 onClose={() => {
-                    destroyCalculator();
+                    console.log(
+                        "[CAL] Close requested"
+                    );
                 }}
                 onMinimize={() => {
-                    console.log("[CAL] Minimize");
+                    console.log(
+                        "[CAL] Calculator minimized"
+                    );
                 }}
             />
         </React.StrictMode>
     );
 
-    console.log("[CAL] Calculator mounted");
+    console.log(
+        "[CAL] Calculator mounted"
+    );
 }
 
-function destroyCalculator() {
-    if (root) {
-        root.unmount();
-        root = null;
-    }
+// Global function for Tampermonkey
+window.mountHoursCalculator =
+    createCalculator;
 
-    if (host) {
-        host.remove();
-        host = null;
-    }
-}
+console.log(
+    "[CAL] mountHoursCalculator registered"
+);
 
-window.mountHoursCalculator = createCalculator;
-
-console.log("[CAL] mountHoursCalculator registered");
-
+// Automatically start
 createCalculator();
