@@ -1,32 +1,23 @@
-/**
- * Hours Calculator
- * Example:
- * 48  -> 2 Days + 00 Hours
- * 25  -> 1 Day + 01 Hours
- * 72  -> 3 Days + 00 Hours
- */
-
 export function calculateHours(value) {
+    const hours = Number(value);
 
-    if (value === "" || value === null || value === undefined) {
+    if (!Number.isFinite(hours) || hours < 0) {
         return "";
     }
 
-    const totalHours = Number(value);
-
-    if (isNaN(totalHours)) {
-        return "Please enter valid hours";
-    }
-
-    if (totalHours < 0) {
-        return "Hours cannot be negative";
-    }
+    const totalHours = Math.floor(hours);
 
     const days = Math.floor(totalHours / 24);
 
-    const hours = totalHours % 24;
+    const remainingHours = totalHours % 24;
 
-    return `${days} ${days === 1 ? "Day" : "Days"} + ${hours
-        .toString()
-        .padStart(2, "0")} Hours`;
+    if (days === 0) {
+        return `${remainingHours} Hours`;
+    }
+
+    if (remainingHours === 0) {
+        return `${days} Days`;
+    }
+
+    return `${days} Days + ${remainingHours} Hours`;
 }

@@ -1,51 +1,91 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import HoursCalculator from "./components/HoursCalculator";
+import "./styles/calculator.css";
 
-import App from "./App.jsx";
-import "./index.css";
+let root = null;
+let host = null;
 
-const ROOT_ID = "sbandapa-hours-calculator-root";
-
-window.mountHoursCalculator = function () {
-
-    if (document.getElementById(ROOT_ID)) {
+function createCalculator() {
+    if (document.getElementById("amazon-hours-calculator-host")) {
+        console.log("[CAL] Calculator already mounted");
         return;
     }
 
-    const container = document.createElement("div");
+    console.log("[CAL] Creating calculator");
 
-    container.id = ROOT_ID;
+    host = document.createElement("div");
 
-    Object.assign(container.style, {
-        position: "fixed",
-        top: "0",
-        left: "0",
-        width: "100vw",
-        height: "100vh",
-        zIndex: "2147483647",
-        pointerEvents: "none",
-        background: "transparent"
+    host.id = "amazon-hours-calculator-host";
+
+    host.style.position = "fixed";
+    host.style.top = "80px";
+    host.style.left = "50%";
+    host.style.transform = "translateX(-50%)";
+    host.style.zIndex = "2147483647";
+
+    document.body.appendChild(host);
+
+    // Shadow DOM prevents Amazon CSS from affecting calculator
+    const shadow = host.attachShadow({
+        mode: "open"
     });
 
-    document.body.appendChild(container);
+    const style = document.createElement("style");
 
-    const root = createRoot(container);
+    style.textContent = `
+        * {
+            box-sizing: border-box;
+        }
+
+        :host {
+            all: initial;
+        }
+
+        button,
+        input {
+            font-family: Arial, sans-serif;
+        }
+    `;
+
+    shadow.appendChild(style);
+
+    const container = document.createElement("div");
+
+    shadow.appendChild(container);
+
+    root = createRoot(container);
 
     root.render(
-        <div
-            style={{
-                width: "100%",
-                height: "100%",
-                pointerEvents: "none"
-            }}
-        >
-            <div
-                style={{
-                    pointerEvents: "auto"
+        <React.StrictMode>
+            <HoursCalculator
+                onClose={() => {
+                    destroyCalculator();
                 }}
-            >
-                <App />
-            </div>
-        </div>
+                onMinimize={() => {
+                    console.log("[CAL] Minimize");
+                }}
+            />
+        </React.StrictMode>
     );
-};
+
+    console.log("[CAL] Calculator mounted");
+}
+
+function destroyCalculator() {
+    if (root) {
+        root.unmount();
+        root = null;
+    }
+
+    if (host) {
+        host.remove();
+        host = null;
+    }
+}
+
+window.mountHoursCalculator = createCalculator;
+
+console.log("[CAL] mountHoursCalculator registered");
+
+createCalculator();

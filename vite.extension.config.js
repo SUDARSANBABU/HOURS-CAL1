@@ -4,24 +4,28 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
     plugins: [react()],
 
+    define: {
+        "process.env.NODE_ENV": JSON.stringify("production"),
+        "process.env": {},
+        process: {
+            env: {
+                NODE_ENV: "production"
+            }
+        }
+    },
+
     build: {
-        outDir: "dist",
-
-        emptyOutDir: false,
-
         lib: {
             entry: "src/extension.jsx",
             name: "HoursCalculator",
             formats: ["iife"],
-            fileName: () => "hours-calculator.js",
+            fileName: () => "hours-calculator.js"
         },
 
-        cssCodeSplit: false,
+        outDir: "dist",
 
-        rollupOptions: {
-            output: {
-                inlineDynamicImports: true,
-            },
-        },
-    },
+        emptyOutDir: false,
+
+        minify: true
+    }
 });

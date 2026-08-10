@@ -1,225 +1,476 @@
-* {
-    margin: 0;
-    padding: 0;
+/* =========================================================
+   HOURS CALCULATOR
+   ========================================================= */
+
+#sbandapa-hours-calculator-root,
+#hours-calculator-react-root {
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
     box-sizing: border-box;
 }
 
-html,
-body,
-#root {
-    width: 100%;
-    height: 100%;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: transparent;
+#sbandapa-hours-calculator-root *,
+#hours-calculator-react-root * {
+    box-sizing: border-box;
 }
 
-/* =========================
-   FLOATING BUTTON
-========================= */
 
+/* =========================================================
+   ROOT
+   ========================================================= */
+
+#sbandapa-hours-calculator-root {
+    pointer-events: none !important;
+}
+
+#hours-calculator-react-root {
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   FLOATING BUTTON
+   ========================================================= */
+
+#sbandapa-hours-calculator-root
+.floating-button,
+
+#hours-calculator-react-root
 .floating-button {
-    position: fixed;
+
+    position: absolute;
+
     width: 60px;
     height: 60px;
-    background: rgb(14, 165, 233);
-    color: rgb(255, 255, 255);
-    border-radius: 50%;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
-    font-size: 25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color: #ffffff;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.28);
+
+    border-radius: 50%;
+
+    font-size: 24px;
+
     cursor: grab;
+
     user-select: none;
+
+    touch-action: none;
+
+    pointer-events: auto;
+
     z-index: 2147483647;
-    box-shadow: 0 12px 36px rgba(14, 165, 233, 0.42);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    box-shadow:
+        0 12px 30px
+        rgba(15,23,42,0.30),
+
+        0 0 0 4px
+        rgba(37,99,235,0.10);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
+#sbandapa-hours-calculator-root
+.floating-button:hover,
+
+#hours-calculator-react-root
 .floating-button:hover {
-    transform: scale(1.1);
+
+    transform:
+        scale(1.06);
+
+    box-shadow:
+        0 16px 38px
+        rgba(15,23,42,0.36),
+
+        0 0 0 5px
+        rgba(37,99,235,0.14);
 }
 
+#sbandapa-hours-calculator-root
+.floating-button:active,
+
+#hours-calculator-react-root
 .floating-button:active {
+
     cursor: grabbing;
 }
 
-/* =========================
+
+/* =========================================================
    DIALOG
-========================= */
+   ========================================================= */
 
+#sbandapa-hours-calculator-root
+.dialog,
+
+#hours-calculator-react-root
 .dialog {
-    position: fixed;
+
+    position: absolute;
+
     width: 380px;
-    background: linear-gradient(180deg, rgba(14, 60, 120, 0.85), rgba(33, 97, 187, 0.72));
-    backdrop-filter: blur(26px) saturate(200%);
-    border: 1px solid rgba(96, 165, 250, 0.28);
-    border-radius: 26px;
+
+    max-width:
+        calc(100vw - 20px);
+
+    background: #ffffff;
+
+    color: #111827;
+
+    border:
+        1px solid #dbe3ef;
+
+    border-radius: 16px;
+
     overflow: hidden;
+
+    pointer-events: auto;
+
     z-index: 2147483647;
-    box-shadow: 0 36px 100px rgba(14, 60, 120, 0.38);
-    transform-style: preserve-3d;
-    animation: dialogFloat 10s ease-in-out infinite;
+
+    box-shadow:
+        0 20px 50px
+        rgba(15,23,42,0.25),
+
+        0 4px 12px
+        rgba(15,23,42,0.10);
+
+    /*
+     * IMPORTANT:
+     * Do not use transform animation here.
+     * Dragging uses left/top.
+     */
+    transform: none;
+
+    animation: none;
 }
 
-.dialog::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 32%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0));
-}
 
-.dialog::after {
-    content: "";
-    position: absolute;
-    inset: 1px;
-    border-radius: 25px;
-    pointer-events: none;
-    border: 1px solid rgba(59, 130, 246, 0.32);
-}
+/* =========================================================
+   HEADER
+   ========================================================= */
 
-/* Header */
+#sbandapa-hours-calculator-root
+.dialog-header,
 
+#hours-calculator-react-root
 .dialog-header {
-    height: 55px;
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.42), rgba(59, 130, 246, 0.32));
-    color: rgb(255, 255, 255);
+
+    height: 54px;
+
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
-    padding: 0 15px;
+
+    padding:
+        0 12px 0 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color: #ffffff;
+
     cursor: grab;
+
     user-select: none;
-    font-size: 16px;
-    font-weight: 600;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-    backdrop-filter: blur(16px);
-}
 
-.dialog-buttons {
-    display: flex;
-    gap: 8px;
-}
+    touch-action: none;
 
-.icon-btn {
-    width: 32px;
-    height: 32px;
-    border: none;
-    border-radius: 10px;
-    background: rgba(59, 130, 246, 0.28);
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.icon-btn:hover {
-    background: rgba(56, 189, 248, 0.4);
-    transform: translateY(-1px);
-}
-
-/* Body */
-
-.dialog-body {
-    padding: 22px;
-    position: relative;
-    z-index: 1;
-}
-
-/* =========================
-   CALCULATOR
-========================= */
-
-.calculator {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.label {
     font-size: 14px;
+
     font-weight: 600;
-    color: rgb(219, 234, 254);
 }
 
-.hours-input {
-    width: 100%;
-    height: 45px;
-    border: 1px solid rgba(96, 165, 250, 0.28);
-    border-radius: 16px;
-    padding: 0 14px;
-    font-size: 18px;
-    outline: none;
-    background: rgba(255, 255, 255, 0.12);
-    color: rgb(255, 255, 255);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+#sbandapa-hours-calculator-root
+.dialog-header:active,
+
+#hours-calculator-react-root
+.dialog-header:active {
+
+    cursor: grabbing;
 }
 
-.hours-input:focus {
-    border-color: rgba(56, 189, 248, 0.95);
-    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+#sbandapa-hours-calculator-root
+.dialog-title,
+
+#hours-calculator-react-root
+.dialog-title {
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
 }
 
-/* Result */
 
-.result-box {
-    min-height: 55px;
-    background: rgba(56, 189, 248, 0.14);
-    border-radius: 16px;
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+#sbandapa-hours-calculator-root
+.dialog-buttons,
+
+#hours-calculator-react-root
+.dialog-buttons {
+
     display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+#sbandapa-hours-calculator-root
+.icon-btn,
+
+#hours-calculator-react-root
+.icon-btn {
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+
     align-items: center;
     justify-content: center;
-    padding: 0 14px;
-    font-size: 18px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background:
+        rgba(255,255,255,0.18);
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    pointer-events: auto;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+#sbandapa-hours-calculator-root
+.icon-btn:hover,
+
+#hours-calculator-react-root
+.icon-btn:hover {
+
+    background:
+        rgba(255,255,255,0.30);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   BODY
+   ========================================================= */
+
+#sbandapa-hours-calculator-root
+.dialog-body,
+
+#hours-calculator-react-root
+.dialog-body {
+
+    padding: 20px;
+
+    background: #ffffff;
+}
+
+
+#sbandapa-hours-calculator-root
+.calculator,
+
+#hours-calculator-react-root
+.calculator {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 13px;
+}
+
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+#sbandapa-hours-calculator-root
+.label,
+
+#hours-calculator-react-root
+.label {
+
+    display: block;
+
+    margin: 0;
+
+    color: #374151;
+
+    font-size: 13px;
+
     font-weight: 600;
-    color: rgb(255, 255, 255);
-    border: 1px solid rgba(56, 189, 248, 0.24);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
 
-@keyframes dialogFloat {
 
-    0%,
-    100% {
-        transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg);
-    }
+/* =========================================================
+   INPUT
+   ========================================================= */
 
-    33% {
-        transform: translate3d(0, -6px, 4px) rotateX(-1.2deg) rotateY(1.1deg);
-    }
+#sbandapa-hours-calculator-root
+.hours-input,
 
-    66% {
-        transform: translate3d(0, -4px, 2px) rotateX(1deg) rotateY(-1deg);
-    }
+#hours-calculator-react-root
+.hours-input {
+
+    width: 100%;
+
+    height: 46px;
+
+    padding:
+        0 13px;
+
+    border:
+        1px solid #cbd5e1;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #111827;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    font-size: 16px;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
-/* =========================
+
+#sbandapa-hours-calculator-root
+.hours-input::placeholder,
+
+#hours-calculator-react-root
+.hours-input::placeholder {
+
+    color: #9ca3af;
+}
+
+
+#sbandapa-hours-calculator-root
+.hours-input:focus,
+
+#hours-calculator-react-root
+.hours-input:focus {
+
+    border-color:
+        #2563eb;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37,99,235,0.12);
+}
+
+
+/* =========================================================
+   RESULT
+   ========================================================= */
+
+#sbandapa-hours-calculator-root
+.result-box,
+
+#hours-calculator-react-root
+.result-box {
+
+    min-height: 46px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding:
+        8px 12px;
+
+    background:
+        #f1f5f9;
+
+    color:
+        #0f172a;
+
+    border:
+        1px solid #e2e8f0;
+
+    border-radius: 9px;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    text-align: center;
+}
+
+
+/* =========================================================
    MOBILE
-========================= */
+   ========================================================= */
 
 @media (max-width: 500px) {
+
+    #sbandapa-hours-calculator-root
+    .dialog,
+
+    #hours-calculator-react-root
     .dialog {
-        width: 90vw;
+
+        width:
+            calc(100vw - 20px);
     }
-}
-
-@import "tailwindcss";
-
-/* Extension root */
-#sbandapa-hours-calculator-root {
-    position: fixed !important;
-    inset: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    z-index: 2147483647 !important;
-    pointer-events: none !important;
-    background: transparent !important;
-}
-
-/* Calculator itself can receive mouse events */
-#sbandapa-hours-calculator-root * {
-    box-sizing: border-box;
 }

@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
-
 import Dialog from "./Dialog";
 import { calculateHours } from "../utils/calculator";
 
 export default function HoursCalculator({
-    position,
-    setPosition,
     onClose,
-    onMinimize,
+    onMinimize
 }) {
     const [hours, setHours] = useState("");
     const [result, setResult] = useState("");
 
-    // Automatically calculate while typing.
     useEffect(() => {
         if (hours === "") {
             setResult("");
@@ -24,23 +20,24 @@ export default function HoursCalculator({
 
     return (
         <Dialog
-            position={position}
-            setPosition={setPosition}
             onClose={onClose}
             onMinimize={onMinimize}
         >
             <div className="calculator">
+
                 <label className="label">
                     Enter Hours
                 </label>
 
                 <input
+                    className="hours-input"
                     type="number"
                     min="0"
-                    className="hours-input"
                     placeholder="Example : 48"
                     value={hours}
-                    onChange={(e) => setHours(e.target.value)}
+                    onChange={(e) => {
+                        setHours(e.target.value);
+                    }}
                     autoFocus
                 />
 
@@ -49,6 +46,7 @@ export default function HoursCalculator({
                         {result}
                     </div>
                 )}
+
             </div>
         </Dialog>
     );

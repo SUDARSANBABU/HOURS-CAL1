@@ -1,24 +1,61 @@
 import { useEffect, useRef, useState } from "react";
 
 export default function useDrag(initialPosition = { x: 100, y: 100 }) {
+    const [position, setPosition] = useState(() => ({
+        x: Number(initialPosition?.x) || 100,
+        y: Number(initialPosition?.y) || 100,
+    }));
 
-    const [position, setPosition] = useState(initialPosition);
+    const positionRef = useRef(position);
 
-    const dragging = useRef(false);
-
-    const offset = useRef({
-        x: 0,
-        y: 0,
+    const dragRef = useRef({
+        active: false,
+        offsetX: 0,
+        offsetY: 0,
+        width: 60,
+        height: 60,
     });
 
+    const wasMovedRef = useRef(false);
+
+    useEffect(() => {
+        positionRef.current = position;
+    }, [position]);
+
     const startDrag = (e) => {
+        if (e.button !== undefined && e.button !== 0) {
+            return;
+        }
 
-        dragging.current = true;
+        const target =
+            e.currentTarget.closest(
+                "[data-hours-calculator-window]"
+            ) || e.currentTarget;
 
-        offset.current = {
-            x: e.clientX - position.x,
-            y: e.clientY - position.y,
+        const rect = target.getBoundingClientRect();
+
+        dragRef.current = {
+            ...dragRef.current,
+
+            active: true,
+
+            offsetX:
+                e.clientX - positionRef.current.x,
+
+            offsetY:
+                e.clientY - positionRef.current.y,
+
+            width: rect.width,
+            height: rect.height,
         };
+
+        wasMovedRef.current = false;
+
+        if (e.currentTarget.setPointerCapture) {
+            e.currentTarget.setPointerCapture(
+                e.pointerId
+            );
+        }
 
         document.body.style.userSelect = "none";
 
@@ -26,47 +63,105 @@ export default function useDrag(initialPosition = { x: 100, y: 100 }) {
     };
 
     useEffect(() => {
-
         const handleMove = (e) => {
+            if (!dragRef.current.active) {
+                return;
+            }
 
-            if (!dragging.current) return;
+            const maxX = Math.max(
+                0,
+                window.innerWidth -
+                    dragRef.current.width
+            );
 
-            let x = e.clientX - offset.current.x;
-            let y = e.clientY - offset.current.y;
+            const maxY = Math.max(
+                0,
+                window.innerHeight -
+                    dragRef.current.height
+            );
 
-            const maxX = window.innerWidth - 60;
-            const maxY = window.innerHeight - 60;
+            const rawX =
+                e.clientX -
+                dragRef.current.offsetX;
 
-            x = Math.max(0, Math.min(x, maxX));
-            y = Math.max(0, Math.min(y, maxY));
+            const rawY =
+                e.clientY -
+                dragRef.current.offsetY;
 
-            setPosition({ x, y });
+            if (
+                Math.abs(
+                    rawX -
+                        positionRef.current.x
+                ) > 3 ||
+                Math.abs(
+                    rawY -
+                        positionRef.current.y
+                ) > 3
+            ) {
+                wasMovedRef.current = true;
+            }
 
+            const x = Math.max(
+                0,
+                Math.min(rawX, maxX)
+            );
+
+            const y = Math.max(
+                0,
+                Math.min(rawY, maxY)
+            );
+
+            setPosition({
+                x,
+                y,
+            });
         };
 
-        const handleUp = () => {
-
-            dragging.current = false;
+        const stopDrag = () => {
+            dragRef.current.active = false;
 
             document.body.style.userSelect = "";
-
         };
 
-        window.addEventListener("mousemove", handleMove);
-        window.addEventListener("mouseup", handleUp);
+        window.addEventListener(
+            "pointermove",
+            handleMove
+        );
+
+        window.addEventListener(
+            "pointerup",
+            stopDrag
+        );
+
+        window.addEventListener(
+            "pointercancel",
+            stopDrag
+        );
 
         return () => {
+            window.removeEventListener(
+                "pointermove",
+                handleMove
+            );
 
-            window.removeEventListener("mousemove", handleMove);
-            window.removeEventListener("mouseup", handleUp);
+            window.removeEventListener(
+                "pointerup",
+                stopDrag
+            );
 
+            window.removeEventListener(
+                "pointercancel",
+                stopDrag
+            );
+
+            document.body.style.userSelect = "";
         };
-
-    }, [position]);
+    }, []);
 
     return {
         position,
         setPosition,
         startDrag,
+        wasMovedRef,
     };
 }
