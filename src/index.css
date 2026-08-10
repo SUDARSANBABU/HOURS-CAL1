@@ -205,3 +205,21 @@ body,
         width: 90vw;
     }
 }
+
+@import "tailwindcss";
+
+/* Extension root */
+#sbandapa-hours-calculator-root {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 2147483647 !important;
+    pointer-events: none !important;
+    background: transparent !important;
+}
+
+/* Calculator itself can receive mouse events */
+#sbandapa-hours-calculator-root * {
+    box-sizing: border-box;
+}

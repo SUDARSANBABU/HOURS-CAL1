@@ -1,73 +1,54 @@
-import React, { useState } from "react";
+import React from "react";
 import { createRoot } from "react-dom/client";
-import HoursCalculator from "./components/HoursCalculator";
-import cssText from "./index.css?inline";
 
-const HOST_ID = "sbandapa-hours-calculator-host";
+import App from "./App.jsx";
+import "./index.css";
 
-export function mountHoursCalculator() {
-    const existing = document.getElementById(HOST_ID);
-    if (existing) return existing;
+const ROOT_ID = "sbandapa-hours-calculator-root";
 
-    const host = document.createElement("div");
-    host.id = HOST_ID;
+window.mountHoursCalculator = function () {
 
-    Object.assign(host.style, {
+    // Prevent duplicate calculator
+    if (document.getElementById(ROOT_ID)) {
+        return;
+    }
+
+    // Create root container
+    const container = document.createElement("div");
+
+    container.id = ROOT_ID;
+
+    // Full-page transparent layer
+    Object.assign(container.style, {
         position: "fixed",
-        inset: "0",
+        top: "0",
+        left: "0",
         width: "100vw",
         height: "100vh",
         zIndex: "2147483647",
         pointerEvents: "none",
+        background: "transparent"
     });
 
-    document.documentElement.appendChild(host);
+    document.body.appendChild(container);
 
-    const shadow = host.attachShadow({ mode: "open" });
+    const root = createRoot(container);
 
-    const style = document.createElement("style");
-    style.textContent = cssText;
-    shadow.appendChild(style);
-
-    const mount = document.createElement("div");
-    mount.style.width = "100%";
-    mount.style.height = "100%";
-    mount.style.pointerEvents = "none";
-    shadow.appendChild(mount);
-
-    function ExtensionApp() {
-        const [position, setPosition] = useState({ x: 150, y: 120 });
-
-        const remove = () => host.remove();
-
-        return (
+    root.render(
+        <div
+            style={{
+                width: "100%",
+                height: "100%",
+                pointerEvents: "none"
+            }}
+        >
             <div
                 style={{
-                    position: "fixed",
-                    inset: 0,
-                    width: "100vw",
-                    height: "100vh",
-                    pointerEvents: "none",
+                    pointerEvents: "auto"
                 }}
             >
-                <div style={{ pointerEvents: "auto" }}>
-                    <HoursCalculator
-                        position={position}
-                        setPosition={setPosition}
-                        onClose={remove}
-                        onMinimize={remove}
-                    />
-                </div>
+                <App />
             </div>
-        );
-    }
-
-    const root = createRoot(mount);
-    root.render(<ExtensionApp />);
-
-    return host;
-}
-
-if (typeof window !== "undefined") {
-    window.mountHoursCalculator = mountHoursCalculator;
-}
+        </div>
+    );
+};
