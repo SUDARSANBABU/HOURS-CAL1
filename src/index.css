@@ -1,0 +1,207 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    height: 100%;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: transparent;
+}
+
+/* =========================
+   FLOATING BUTTON
+========================= */
+
+.floating-button {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    background: rgb(14, 165, 233);
+    color: rgb(255, 255, 255);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    cursor: grab;
+    user-select: none;
+    z-index: 2147483647;
+    box-shadow: 0 12px 36px rgba(14, 165, 233, 0.42);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.floating-button:hover {
+    transform: scale(1.1);
+}
+
+.floating-button:active {
+    cursor: grabbing;
+}
+
+/* =========================
+   DIALOG
+========================= */
+
+.dialog {
+    position: fixed;
+    width: 380px;
+    background: linear-gradient(180deg, rgba(14, 60, 120, 0.85), rgba(33, 97, 187, 0.72));
+    backdrop-filter: blur(26px) saturate(200%);
+    border: 1px solid rgba(96, 165, 250, 0.28);
+    border-radius: 26px;
+    overflow: hidden;
+    z-index: 2147483647;
+    box-shadow: 0 36px 100px rgba(14, 60, 120, 0.38);
+    transform-style: preserve-3d;
+    animation: dialogFloat 10s ease-in-out infinite;
+}
+
+.dialog::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 32%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0));
+}
+
+.dialog::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: 25px;
+    pointer-events: none;
+    border: 1px solid rgba(59, 130, 246, 0.32);
+}
+
+/* Header */
+
+.dialog-header {
+    height: 55px;
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.42), rgba(59, 130, 246, 0.32));
+    color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    cursor: grab;
+    user-select: none;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(16px);
+}
+
+.dialog-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.icon-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(59, 130, 246, 0.28);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.icon-btn:hover {
+    background: rgba(56, 189, 248, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Body */
+
+.dialog-body {
+    padding: 22px;
+    position: relative;
+    z-index: 1;
+}
+
+/* =========================
+   CALCULATOR
+========================= */
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.label {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(219, 234, 254);
+}
+
+.hours-input {
+    width: 100%;
+    height: 45px;
+    border: 1px solid rgba(96, 165, 250, 0.28);
+    border-radius: 16px;
+    padding: 0 14px;
+    font-size: 18px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.12);
+    color: rgb(255, 255, 255);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.hours-input:focus {
+    border-color: rgba(56, 189, 248, 0.95);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Result */
+
+.result-box {
+    min-height: 55px;
+    background: rgba(56, 189, 248, 0.14);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px;
+    font-size: 18px;
+    font-weight: 600;
+    color: rgb(255, 255, 255);
+    border: 1px solid rgba(56, 189, 248, 0.24);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+@keyframes dialogFloat {
+
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg);
+    }
+
+    33% {
+        transform: translate3d(0, -6px, 4px) rotateX(-1.2deg) rotateY(1.1deg);
+    }
+
+    66% {
+        transform: translate3d(0, -4px, 2px) rotateX(1deg) rotateY(-1deg);
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 500px) {
+    .dialog {
+        width: 90vw;
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "manifest_version": 2,
+
+    "name": "Hours Calculator",
+
+    "version": "1.0",
+
+    "description": "Hours calculator popup for Amazon Logistics",
+
+    "icons": {
+        "48": "icon.png"
+    },
+
+    "permissions": [
+        "tabs",
+        "storage",
+        "https://trans-logistics.amazon.com/*"
+    ],
+
+    "content_scripts": [
+        {
+            "matches": [
+                "https://trans-logistics.amazon.com/fmc/scheduling/clone/plan/*",
+                "SSP : https://trans-logistics.amazon.com/ssp/dock/ob?*",
+               " https://trans-logistics.amazon.com/ssp/dock/ob?*",
+                
+          
+               " https://trans-logistics.amazon.com/fmc/execution/*",
+               " https://trans-logistics.amazon.com/fmc/execution/*",
+               " https://trans-logistics.amazon.com/fmc/scheduling/clone/plan/*"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "run_at": "document_idle"
+        }
+    ],
+
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    }
+}
