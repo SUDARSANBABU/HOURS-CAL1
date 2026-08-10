@@ -1,27 +1,39 @@
 import { useEffect, useState } from "react";
+
 import Dialog from "./Dialog";
+
 import { calculateHours } from "../utils/calculator";
 
 export default function HoursCalculator({
     onClose,
-    onMinimize
+    onMinimize,
 }) {
     const [hours, setHours] = useState("");
+
     const [result, setResult] = useState("");
 
-    /*
-     * AUTO CALCULATE
-     *
-     * Whenever the user types a number,
-     * calculation happens automatically.
-     */
     useEffect(() => {
+
+        console.log(
+            "[CAL] Input:",
+            hours
+        );
+
         if (hours === "") {
             setResult("");
             return;
         }
 
-        setResult(calculateHours(hours));
+        const calculated =
+            calculateHours(hours);
+
+        console.log(
+            "[CAL] Result:",
+            calculated
+        );
+
+        setResult(calculated);
+
     }, [hours]);
 
     return (
@@ -29,6 +41,7 @@ export default function HoursCalculator({
             onClose={onClose}
             onMinimize={onMinimize}
         >
+
             <div className="calculator">
 
                 <label className="label">
@@ -39,22 +52,39 @@ export default function HoursCalculator({
                     className="hours-input"
                     type="number"
                     min="0"
-                    step="1"
+                    step="any"
                     placeholder="Example : 48"
                     value={hours}
                     onChange={(e) => {
-                        setHours(e.target.value);
+                        setHours(
+                            e.target.value
+                        );
                     }}
                     autoFocus
                 />
 
-                {result && (
-                    <div className="result-box">
-                        {result}
-                    </div>
-                )}
+                <div className="result-box">
+
+                    {result ? (
+                        <>
+                            <span className="result-label">
+                                RESULT
+                            </span>
+
+                            <span className="result-value">
+                                {result}
+                            </span>
+                        </>
+                    ) : (
+                        <span className="result-empty">
+                            Type hours above
+                        </span>
+                    )}
+
+                </div>
 
             </div>
+
         </Dialog>
     );
 }

@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 
 import HoursCalculator from "./components/HoursCalculator";
 
+import appCSS from "./index.css?inline";
 import calculatorCSS from "./styles/calculator.css?inline";
 
 let root = null;
@@ -50,6 +51,7 @@ function createCalculator() {
         document.createElement("style");
 
     style.textContent = `
+        ${appCSS}
         ${calculatorCSS}
 
         * {
