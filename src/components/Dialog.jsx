@@ -262,7 +262,7 @@ export default function Dialog({
                     </span>
 
                     <span>
-                        Hours Calculator
+                        Hours Cal (sbandapa)
                     </span>
                 </div>
 
