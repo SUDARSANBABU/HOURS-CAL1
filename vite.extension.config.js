@@ -3,15 +3,21 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
     plugins: [react()],
+
     build: {
+        outDir: "dist",
+
+        emptyOutDir: false,
+
         lib: {
             entry: "src/extension.jsx",
-            name: "HoursCalculatorExtension",
+            name: "HoursCalculator",
             formats: ["iife"],
             fileName: () => "hours-calculator.js",
         },
+
         cssCodeSplit: false,
-        emptyOutDir: false,
+
         rollupOptions: {
             output: {
                 inlineDynamicImports: true,

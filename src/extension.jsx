@@ -8,17 +8,14 @@ const ROOT_ID = "sbandapa-hours-calculator-root";
 
 window.mountHoursCalculator = function () {
 
-    // Prevent duplicate calculator
     if (document.getElementById(ROOT_ID)) {
         return;
     }
 
-    // Create root container
     const container = document.createElement("div");
 
     container.id = ROOT_ID;
 
-    // Full-page transparent layer
     Object.assign(container.style, {
         position: "fixed",
         top: "0",
